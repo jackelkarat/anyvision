@@ -4,25 +4,21 @@ import {Link, Redirect} from "react-router-dom";
 import { Button, FormGroup, FormControl, ControlLabel, Alert } from "react-bootstrap";
 import TitleComponent from "./title";
 import Header from "../elements/header";
-
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+require('dotenv').config();
 
 
-export default class Login extends Component {
-    
+export default class Home extends Component {
     constructor(props) {
         super(props);
         var dataResponse = '';
 
         this.state = {
-            email: "",
-            password: ""
+            url: ""
         };
     }
 
     validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
+        return this.state.url.length > 0;
     }
 
     handleChange = event => {
@@ -33,29 +29,26 @@ export default class Login extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const login = {
-            email: this.state.email,
-            password: this.state.password
+        const url = {
+            userid: '1',
+            url: this.state.url,
         }
 
-        console.log(login);
+        console.log(url);
 
-        axios.post('http://localhost:3001/users/login', login)
+        axios.post('http://localhost:3001/links/addURL', url)
             .then(function (response) {
                 console.log(response);
                 if (response.data == true) {
-                    sessionStorage.setItem('IsAllowed', 'true');
-                    window.location = '/home';
+                    window.location = '/rtsp';
+
+
                 } else {
-
-                        toast.error(response.data);
-
+                    this.dataResponse = response.data;
                 }
             })
             .catch(error => {
                 console.log(error);
-                toast.error(error);
-
             });
     }
 
@@ -66,35 +59,27 @@ export default class Login extends Component {
                 <div className="container">
 
 
-                <ToastContainer />
 
 
-                    <TitleComponent title="Login "></TitleComponent>
+                    <TitleComponent title="Home "></TitleComponent>
                     <div className="card card-login mx-auto mt-5">
-                        <div className="card-header">Login</div>
+                        <div className="card-header">Home</div>
                         <div className="card-body">
                             <form onSubmit={this.handleSubmit}>
-                                <FormGroup controlId="email" >
-                                    <label>Email</label>
+                                
+                                <FormGroup controlId="url" >
+                                    <label>Add URL</label>
                                     <FormControl
                                         autoFocus
-                                        type="email"
-                                        value={this.state.email}
+                                        type="text"
+                                        value={this.state.url}
                                         onChange={this.handleChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup controlId="password" >
-                                    <label>Password</label>
-                                    <FormControl
-                                        value={this.state.password}
-                                        onChange={this.handleChange}
-                                        type="password"
                                     />
                                 </FormGroup>
                                 <Button 
                                 block disabled={!this.validateForm()}
                                     type="submit">
-                                    Login
+                                    Add URL
             </Button>
                             </form>
                         </div>
