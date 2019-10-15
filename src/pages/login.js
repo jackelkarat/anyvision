@@ -92,7 +92,7 @@ export default class Login extends Component {
                                 block disabled={!this.validateForm()}
                                     type="submit">
                                     Login
-            </Button>
+                                </Button>
                             </form>
                             <div className="text-center">
                             <Link className="d-block small mt-3" to={'/register'}>Register Your Account</Link>

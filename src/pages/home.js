@@ -41,8 +41,6 @@ export default class Home extends Component {
                 console.log(response);
                 if (response.data == true) {
                     window.location = '/rtsp';
-
-
                 } else {
                     this.dataResponse = response.data;
                 }
@@ -59,11 +57,9 @@ export default class Home extends Component {
                 <div className="container">
                     <TitleComponent title="Home "></TitleComponent>
                     <div className="card card-login mx-auto mt-5">
-                        <div className="card-header">Hi {firstname} in Home page</div>
-
+                        <div className="card-header">Hi {firstname}, welcome to Home page</div>
                         <div className="card-body">
                             <form onSubmit={this.handleSubmit}>
-                                
                                 <FormGroup controlId="url" >
                                     <label>Add URL</label>
                                     <FormControl

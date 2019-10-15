@@ -7,8 +7,7 @@ require('dotenv').config();
 
 const Links = props => (
   <tr>
-    <td>{props.link.id}</td>  
-    <td>{props.link.link}</td>  
+    <td><a target="_blank"  href={`${props.link.link}`}>{props.link.link}</a></td>  
   </tr>
 )
 
@@ -64,7 +63,6 @@ export default class Rtsp extends Component {
                                                cellSpacing="0">
                                             <thead>
                                             <tr>
-                                            <th></th>
                                             <th>Links</th>
                                             </tr>
                                             </thead>
