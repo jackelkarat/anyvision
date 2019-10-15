@@ -13,7 +13,6 @@ export default class Login extends Component {
     
     constructor(props) {
         super(props);
-        var dataResponse = '';
 
         this.state = {
             email: "",
@@ -43,12 +42,14 @@ export default class Login extends Component {
         axios.post('http://localhost:3001/users/login', login)
             .then(function (response) {
                 console.log(response);
-                if (response.data == true) {
+                if (response.status == 200 && !response.data.error) {
                     sessionStorage.setItem('IsAllowed', 'true');
+                    sessionStorage.setItem('userId',response.data[0].id);
+                    sessionStorage.setItem('userFirstname',response.data[0].firstname);
                     window.location = '/home';
                 } else {
 
-                        toast.error(response.data);
+                        toast.error(response.data.error);
 
                 }
             })
@@ -64,11 +65,7 @@ export default class Login extends Component {
             <div>
                 <Header />
                 <div className="container">
-
-
                 <ToastContainer />
-
-
                     <TitleComponent title="Login "></TitleComponent>
                     <div className="card card-login mx-auto mt-5">
                         <div className="card-header">Login</div>
@@ -97,6 +94,9 @@ export default class Login extends Component {
                                     Login
             </Button>
                             </form>
+                            <div className="text-center">
+                            <Link className="d-block small mt-3" to={'/register'}>Register Your Account</Link>
+                        </div>
                         </div>
                     </div>
                 </div>

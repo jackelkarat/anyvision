@@ -5,12 +5,7 @@ import './assets/css/sb-admin.css'
 
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-
 import Login from "./pages/login";
-import Dashboard from "./pages/dashboard";
-import Index from "./pages/index";
-import AddPage from "./pages/add";
-import EditPage from "./pages/edit";
 import Register from "./pages/register";
 import NotFound from "./pages/notfound";
 import Home from "./pages/home";
@@ -40,12 +35,8 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' component={Login} />
                         <PrivateRoute exact  path='/rtsp' component={Rtsp} />
-                        <PrivateRoute exact  path='/dashboard' component={Dashboard} />
-                        <Route path='/index' component={Index}/>
                         <PrivateRoute exact  path='/home' component={Home} />
                         <Route path='/register' component={Register} />
-                        <PrivateRoute exact  path='/add' component={AddPage} />
-                        <PrivateRoute exact  path='/edit/' component={EditPage} />
                         <Route path='*' component={NotFound} />
                     </Switch>
                 </Router>

@@ -14,27 +14,9 @@ class NotFound extends Component {
                      
                     <div id="content-wrapper">
                         <div className="container-fluid">
-                            <ol className="breadcrumb">
-                                <li className="breadcrumb-item">
-                                    <Link to={'/dashboard'}>Dashboard</Link>
-                                </li>
-                                <li className="breadcrumb-item active">404 Error</li>
-                            </ol>
-
                             <h1 className="display-1">404</h1>
-                            <p className="lead">Page not found. You can
-                                <a href={this.props.history.goBack} onClick={this.props.history.goBack}>go back</a>
-                                to the previous page, or
-                                <Link to={'/dashboard'}>return home</Link>.</p>
+                            <p className="lead">Page not found. You can go back to the previous page, or&nbsp;<Link to={'/home'}>return home</Link>.</p>
                         </div>
-
-                        <footer className="sticky-footer">
-                            <div className="container my-auto">
-                                <div className="copyright text-center my-auto">
-                                    <span>Copyright © Your Website <div>{(new Date().getFullYear())}</div></span>
-                                </div>
-                            </div>
-                        </footer>
                     </div>
                 </div>
             </div>

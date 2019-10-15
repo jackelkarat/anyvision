@@ -1,116 +1,124 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Link, Redirect} from 'react-router-dom';
+import {Link, Redirect} from "react-router-dom";
+import { Button, FormGroup, FormControl, ControlLabel, Alert } from "react-bootstrap";
 import TitleComponent from "./title";
 import Header from "../elements/header";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 export default class Register extends Component {
+    
+    constructor(props) {
+        super(props);
 
-    state = {
-        name: '',
-        email: '',
-        password: '',
-        redirect: false,
-        authError: false,
-        isLoading: false,
-    };
+        this.state = {
+            firstname: "",
+            lastname:"",
+            email: "",
+            password: ""
+        };
+    }
 
-    handleEmailChange = event => {
-        this.setState({ email: event.target.value });
-    };
-    handlePwdChange = event => {
-        this.setState({ password: event.target.value });
-    };
-    handleNameChange = event => {
-        this.setState({ name: event.target.value });
-    };
+    validateForm() {
+        return this.state.email.length > 0 && 
+        this.state.password.length > 0 && 
+        this.state.firstname.length > 0 && 
+        this.state.lastname.length > 0;
+    }
+
+    handleChange = event => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    }
 
     handleSubmit = event => {
         event.preventDefault();
-        this.setState({isLoading: true});
-        const url = 'https://gowtham-rest-api-crud.herokuapp.com/register';
-        const email = this.state.email;
-        const password = this.state.password;
-        const name = this.state.name;
-        let bodyFormData = new FormData();
-        bodyFormData.set('email', email);
-        bodyFormData.set('name', name);
-        bodyFormData.set('password', password);
-        axios.post(url, bodyFormData)
-            .then(result => {
-                this.setState({isLoading: false});
-                if (result.data.status !== 'fail') {
-                    this.setState({redirect: true, authError: true});
-                }else {
-                    this.setState({redirect: false, authError: true});
+        const register = {
+            firstname: this.state.firstname,
+            lastname: this.state.lastname,
+            email: this.state.email,
+            password: this.state.password
+        }
+
+        console.log(register);
+
+        axios.post('http://localhost:3001/users/register', register)
+            .then(function (response) {
+                console.log(response);
+                if (response.status == 200 && response.data == "success") {
+                    window.location = '/';
+                } else {
+                    toast.error(response.data.error);
                 }
             })
             .catch(error => {
                 console.log(error);
-                this.setState({ authError: true, isLoading: false });
-            });
-    };
+                toast.error(error);
 
-    renderRedirect = () => {
-        if (this.state.redirect) {
-            return <Redirect to="/" />
-        }
-    };
+            });
+    }
 
     render() {
-        const isLoading = this.state.isLoading;
         return (
             <div>
-            <Header/>
-            <div className="container">
-                <TitleComponent title="Login "></TitleComponent>
-                <div className="card card-login mx-auto mt-5">
-                    <div className="card-header">Register</div>
-                    <div className="card-body">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="form-group">
-                                <div className="form-label-group">
-                                    <input type="text" id="inputName" className="form-control" placeholder="name"  name="name" onChange={this.handleNameChange} required/>
-                                    <label htmlFor="inputName">Name</label>
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <div className="form-label-group">
-                                    <input id="inputEmail" className={"form-control " + (this.state.authError ? 'is-invalid' : '')} placeholder="Email address" type="text" name="email" onChange={this.handleEmailChange} autoFocus required/>
-                                    <label htmlFor="inputEmail">Email address</label>
-                                    <div className="invalid-feedback">
-                                        Please provide a valid Email. or Email Exis
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="form-label-group">
-                                    <input type="password" className="form-control" id="inputPassword" placeholder="******"  name="password" onChange={this.handlePwdChange} required/>
-                                    <label htmlFor="inputPassword">Password</label>
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <button className="btn btn-primary btn-block" type="submit" disabled={this.state.isLoading ? true : false}>Register &nbsp;&nbsp;&nbsp;
-                                    {isLoading ? (
-                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    ) : (
-                                        <span></span>
-                                    )}
-                                </button>
-                            </div>
-                        </form>
-                        <div className="text-center">
-                            <Link className="d-block small mt-3" to={''}>Login Your Account</Link>
+                <Header />
+                <div className="container">
+                <ToastContainer />
+                    <TitleComponent title="Register"></TitleComponent>
+                    <div className="card card-login mx-auto mt-5">
+                        <div className="card-header">Register</div>
+                        <div className="card-body">
+                            <form onSubmit={this.handleSubmit}>
+                            <FormGroup controlId="firstname" >
+                                    <label>Firstname</label>
+                                    <FormControl
+                                    autoFocus
+                                        value={this.state.firstname}
+                                        onChange={this.handleChange}
+                                        type="text"
+                                    />
+                            </FormGroup>
+                            <FormGroup controlId="lastname" >
+                                    <label>Lastname</label>
+                                    <FormControl
+                                        value={this.state.lastname}
+                                        onChange={this.handleChange}
+                                        type="text"
+                                    />
+                                </FormGroup>
+                                <FormGroup controlId="email" >
+                                    <label>Email</label>
+                                    <FormControl
+                                        type="email"
+                                        value={this.state.email}
+                                        onChange={this.handleChange}
+                                    />
+                                </FormGroup>
+                                <FormGroup controlId="password" >
+                                    <label>Password</label>
+                                    <FormControl
+                                        value={this.state.password}
+                                        onChange={this.handleChange}
+                                        type="password"
+                                    />
+                                </FormGroup>
+                                <Button 
+                                block disabled={!this.validateForm()}
+                                    type="submit">
+                                    Register
+            </Button>
+                            </form>
+                            <div className="text-center">
+                            <Link className="d-block small mt-3" to={'/'}>Login Your Account</Link>
+                        </div>
                         </div>
                     </div>
                 </div>
-                {this.renderRedirect()}
-            </div>
             </div>
         );
     }
 }
-
-

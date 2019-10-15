@@ -23,7 +23,7 @@ export default class Rtsp extends Component {
   componentDidMount() {
 
     const rtsp = {
-        userid: '1',
+        userid: sessionStorage.getItem('userId'),
     }
 
     console.log(rtsp);
